@@ -1,96 +1,73 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { WORDS } from "../utils/words";
+import { encryptRot13 } from "../utils/caesar-cipher";
 import "./App.css";
 
-const SOLUTION = "world";
 const WORD_LENGTH = 5;
 
-function Row({ guess, isGuessEntered }) {
-  const tiles = [];
-  // when the guess is null or '', we still want to render the tiles with empty strings
-  for (let i = 0; i < WORD_LENGTH; i++) {
-    const char = guess[i];
-    let className = "tile";
-    if (isGuessEntered) {
-      if (char === SOLUTION[i]) {
-        className = className + " correct";
-      } else if (SOLUTION.includes(char)) {
-        className = className + " close";
-      } else {
-        className = className + " incorrect";
+function App() {
+  const [word, setWord] = useState("");
+  const [isNext, setIsNext] = useState(false);
+  const [name, setName] = useState("");
+  const [error, setError] = useState("");
+
+  function handleCreateLink() {
+    if (!isNext) {
+      if (word.length !== WORD_LENGTH) {
+        setError("The word should be 5 letters long");
+        return;
       }
+      if (!WORDS.includes(word)) {
+        setError("Enter a real word");
+        return;
+      }
+      setError("");
+      setIsNext(true);
+      return;
     }
-    tiles.push(
-      <div key={i} className={className}>
-        {char}
-      </div>
+    const hashedSolution = encryptRot13(word.toUpperCase()).toLowerCase();
+    navigator.clipboard.writeText(
+      `http://localhost:5173/${hashedSolution}-${name}-`
     );
   }
 
-  return <div className="row">{tiles}</div>;
-}
-
-function Board() {
-  const [guesses, setGuesses] = useState(Array(6).fill(null));
-  const [currentGuess, setCurrentGuess] = useState("");
-  const [isGameOver, setIsGameOver] = useState(false);
-
-  useEffect(() => {
-    function handleClick(event) {
-      if (isGameOver) return;
-
-      if (event.key === "Backspace") {
-        setCurrentGuess(currentGuess.slice(0, -1));
-        return;
-      }
-
-      if (
-        !event.key.match(/[aA-zZ]/i) ||
-        event.key == "Alt" ||
-        event.key == "Shift" ||
-        event.key == "Control" ||
-        event.key == "CapsLock" ||
-        event.key == "Tab"
-      )
-        return;
-
-      if (event.key == "Enter" && currentGuess.length == WORD_LENGTH) {
-        const newGuesses = guesses;
-        newGuesses[guesses.findIndex((val) => val == null)] = currentGuess;
-        setGuesses(newGuesses);
-        if (currentGuess === SOLUTION) setIsGameOver(true);
-        setCurrentGuess("");
-
-        return;
-      }
-
-      if (currentGuess.length === WORD_LENGTH) return;
-
-      setCurrentGuess(currentGuess + event.key);
-    }
-
-    window.addEventListener("keydown", handleClick);
-
-    return () => window.removeEventListener("keydown", handleClick);
-  }, [currentGuess, guesses, isGameOver]);
-
   return (
-    <div className="board">
-      {guesses.map((guess, idx) => {
-        const isCurrentGuess = idx === guesses.findIndex((val) => val == null);
-        return (
-          <Row
-            key={idx}
-            guess={isCurrentGuess ? currentGuess : guess ?? ""}
-            isGuessEntered={!isCurrentGuess && guess != null}
-          />
-        );
-      })}
+    <div className="container">
+      <h1>Wordle With Friends</h1>
+      <h2>
+        Let your friends solve your{" "}
+        <a
+          href="https://www.nytimes.com/games/wordle/index.html"
+          target="_blank"
+        >
+          Wordle!
+        </a>
+      </h2>
+      <p>Enter a 5 letters word to get started.</p>
+      <input
+        type="text"
+        placeholder="Enter a word"
+        onChange={(e) => {
+          if (e.target.value.length > WORD_LENGTH) return;
+          setWord(e.target.value);
+        }}
+        value={word}
+      />
+      {error && <p className="error">{error}</p>}
+      {isNext && (
+        <input
+          type="text"
+          placeholder="What's your name?"
+          onChange={(e) => setName(e.target.value)}
+          value={name}
+        />
+      )}
+      <button onClick={handleCreateLink} disabled={isNext ? !name : !word}>
+        {isNext ? "Create link" : "next"}
+      </button>
+      {/* <Board /> */}
     </div>
   );
-}
-
-function App() {
-  return <Board />;
 }
 
 export default App;

@@ -1,7 +1,92 @@
+/*
+  1. Use a more-intuitive box-sizing model.
+*/
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+/*
+  2. Remove default margin
+*/
 * {
   margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+}
+/*
+  Typographic tweaks!
+  3. Add accessible line-height
+  4. Improve text rendering
+*/
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #000;
+}
+/*
+  5. Improve media defaults
+*/
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+/*
+  6. Remove built-in form typography styles
+*/
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+/*
+  7. Avoid text overflows
+*/
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+/*
+  8. Create a root stacking context
+*/
+#root,
+#__next {
+  isolation: isolate;
+}
+
+h1 {
+  padding-block: 16px;
+  border-bottom: 2px solid #d3d6da;
+}
+
+h2 {
+  margin-top: 40px;
+}
+
+p {
+  margin-top: 8px;
+}
+
+a {
+  color: #000;
+  transition: color 300ms;
+}
+
+a:hover {
+  color: #787c7e;
+}
+
+.container {
+  text-align: center;
 }
 
 .board {
@@ -11,7 +96,7 @@
   align-items: center;
   gap: 5px;
   min-height: 100vh;
-  background: #121213;
+  background: #ffffff;
 }
 
 .row {
@@ -20,27 +105,30 @@
 }
 
 .tile {
-  color: #fff;
+  color: #000;
   width: 50px;
   height: 50px;
-  border: 1px solid #3a3a3c;
-  font-size: 30px;
+  /*TODO: when you type a letter set the border color to this #787c7e */
+  border: 2px solid #d3d6da;
+  font-size: 24px;
   display: flex;
   justify-content: center;
   align-items: center;
   text-transform: uppercase;
-  font-family: "Courier New", Courier, monospace;
   font-weight: bold;
 }
 
 .correct {
+  color: #fff;
   background-color: #538d4e;
 }
 
 .close {
+  color: #fff;
   background-color: #b59f3b;
 }
 
 .incorrect {
-  background-color: #3a3a3c;
+  color: #fff;
+  background-color: #787c7e;
 }
