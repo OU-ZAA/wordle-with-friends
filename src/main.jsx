@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
+import Board from "./Board.jsx";
 import "./index.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
@@ -10,8 +11,8 @@ const router = createBrowserRouter([
     element: <App />,
   },
   {
-    path: "/:hashed_solution",
-    element: <App />,
+    path: "/:details",
+    element: <Board />,
   },
 ]);
 

@@ -6,3 +6,4 @@
 - [x] ability to input letter inside the box
 - [x] after entering a word the bg should be the right color for every state
 - [x] enter a word and generate a link
+- [ ] display the board when entering the copied link
