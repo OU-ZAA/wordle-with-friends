@@ -3,6 +3,24 @@ import { useParams } from "react-router-dom";
 import { decryptRot13 } from "../utils/caesar-cipher";
 
 const WORD_LENGTH = 5;
+const backspace = (
+  <svg
+    aria-hidden="true"
+    xmlns="http://www.w3.org/2000/svg"
+    height="28"
+    viewBox="0 0 24 24"
+    width="20"
+    data-role="Backspace"
+  >
+    <path
+      fill="black"
+      d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H7.07L2.4 12l4.66-7H22v14zm-11.59-2L14 13.41 17.59 17 19 15.59 15.41 12 19 8.41 17.59 7 14 10.59 10.41 7 9 8.41 12.59 12 9 15.59z"
+    ></path>
+  </svg>
+);
+const ROW1 = ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"];
+const ROW2 = ["a", "s", "d", "f", "g", "h", "j", "k", "l"];
+const ROW3 = ["Enter", "z", "x", "c", "v", "b", "n", "m", backspace];
 
 function Modal({ name, solution, setIsGameOver }) {
   return (
@@ -105,6 +123,83 @@ function Row({ guess, isGuessEntered, solution }) {
   return <div className="flex gap-1">{tiles}</div>;
 }
 
+function KeyboardLayout({
+  currentGuess,
+  setCurrentGuess,
+  guesses,
+  setGuesses,
+  solution,
+  isGameOver,
+  setIsGameOver,
+}) {
+  function handleClick(event) {
+    if (isGameOver) return;
+
+    if (event.target.dataset.role === "Backspace") {
+      setCurrentGuess(currentGuess.slice(0, -1));
+      return;
+    }
+
+    if (
+      event.target.textContent == "Enter" &&
+      currentGuess.length == WORD_LENGTH
+    ) {
+      const newGuesses = guesses;
+      newGuesses[guesses.findIndex((val) => val == null)] = currentGuess;
+      setGuesses(newGuesses);
+
+      if (currentGuess === solution) {
+        setIsGameOver(!isGameOver);
+        return;
+      }
+      setCurrentGuess("");
+      return;
+    }
+
+    if (currentGuess.length === WORD_LENGTH) return;
+
+    setCurrentGuess(currentGuess + event.target.textContent);
+  }
+
+  return (
+    <div className="mt-3 flex flex-col gap-2">
+      <div className="flex justify-center items-center gap-1">
+        {ROW1.map((row, idx) => (
+          <button
+            className="bg-gray-300 text-lg px-4 py-2  rounded uppercase font-bold"
+            key={idx}
+            onClick={handleClick}
+          >
+            {row}
+          </button>
+        ))}
+      </div>
+      <div className="flex justify-center items-center gap-1">
+        {ROW2.map((row, idx) => (
+          <button
+            className="bg-gray-300 text-lg px-4 py-2 rounded uppercase font-bold"
+            key={idx}
+            onClick={handleClick}
+          >
+            {row}
+          </button>
+        ))}
+      </div>
+      <div className="flex justify-center items-center gap-1">
+        {ROW3.map((row, idx) => (
+          <button
+            className="bg-gray-300 text-lg px-4 py-2 rounded uppercase font-bold"
+            key={idx}
+            onClick={handleClick}
+          >
+            {row}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function Board() {
   const [guesses, setGuesses] = useState(Array(6).fill(null));
   const [currentGuess, setCurrentGuess] = useState("");
@@ -114,7 +209,8 @@ function Board() {
   const solution = decryptRot13(hashedSolution.toUpperCase()).toLowerCase();
 
   useEffect(() => {
-    function handleClick(event) {
+    function handleType(event) {
+      console.log(guesses);
       if (isGameOver) return;
 
       if (event.key === "Backspace") {
@@ -122,33 +218,34 @@ function Board() {
         return;
       }
 
-      if (
-        !event.key.match(/[aA-zZ]/i) ||
-        event.key == "Alt" ||
-        event.key == "Shift" ||
-        event.key == "Control" ||
-        event.key == "CapsLock" ||
-        event.key == "Tab"
-      )
-        return;
-
       if (event.key == "Enter" && currentGuess.length == WORD_LENGTH) {
         const newGuesses = guesses;
         newGuesses[guesses.findIndex((val) => val == null)] = currentGuess;
         setGuesses(newGuesses);
-        if (currentGuess === solution) setIsGameOver(true);
+        if (currentGuess === solution) {
+          console.log("guesses", guesses);
+          setIsGameOver(true);
+          return;
+        }
         setCurrentGuess("");
         return;
       }
+
+      if (
+        event.key.length !== 1 ||
+        event.key.charCodeAt(0) < 97 ||
+        event.key.charCodeAt(0) > 122
+      )
+        return;
 
       if (currentGuess.length === WORD_LENGTH) return;
 
       setCurrentGuess(currentGuess + event.key);
     }
 
-    window.addEventListener("keydown", handleClick);
+    window.addEventListener("keydown", handleType);
 
-    return () => window.removeEventListener("keydown", handleClick);
+    return () => window.removeEventListener("keydown", handleType);
   }, [currentGuess, guesses, isGameOver, solution]);
 
   return (
@@ -177,6 +274,15 @@ function Board() {
       {isGameOver && (
         <Modal name={name} solution={solution} setIsGameOver={setIsGameOver} />
       )}
+      <KeyboardLayout
+        currentGuess={currentGuess}
+        setCurrentGuess={setCurrentGuess}
+        guesses={guesses}
+        setGuesses={setGuesses}
+        isGameOver={isGameOver}
+        setIsGameOver={setIsGameOver}
+        solution={solution}
+      />
     </div>
   );
 }
