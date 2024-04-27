@@ -55,7 +55,7 @@ function HomePage() {
           placeholder="Enter your word here"
           onChange={(e) => {
             if (e.target.value.length > WORD_LENGTH) return;
-            setWord(e.target.value);
+            setWord(e.target.value.toLowerCase());
           }}
           disabled={isNext}
           value={word}
