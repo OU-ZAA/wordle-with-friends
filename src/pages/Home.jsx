@@ -50,7 +50,7 @@ function HomePage() {
       </p>
       <div className="mt-6 flex flex-col items-center">
         <input
-          className="shadow appearance-none border uppercase rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-96"
+          className="shadow appearance-none border uppercase rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-80 sm:w-96"
           type="text"
           placeholder="Enter your word here"
           onChange={(e) => {
@@ -63,7 +63,7 @@ function HomePage() {
         {error && <p className="error">{error}</p>}
         {isNext && (
           <input
-            className="mt-3 shadow appearance-none border capitalize rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-96"
+            className="mt-3 shadow appearance-none border capitalize rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-80 sm:w-96"
             type="text"
             placeholder="What's your name?"
             disabled={isCopied}
@@ -73,7 +73,7 @@ function HomePage() {
         )}
         <button
           onClick={handleCreateLink}
-          className={`py-2 mt-3 w-96 ${
+          className={`py-2 mt-3 w-80 sm:w-96 ${
             isCopied ? "bg-green-600" : "bg-black"
           } text-white rounded font-bold`}
           disabled={isNext ? !name : !word}
