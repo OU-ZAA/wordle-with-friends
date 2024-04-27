@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { WORDS } from "../utils/words";
 import { encryptRot13 } from "../utils/caesar-cipher";
+import { Header } from "../components/ui/Header";
 
 const WORD_LENGTH = 5;
 
-function App() {
+function HomePage() {
   const [word, setWord] = useState("");
   const [name, setName] = useState("");
   const [error, setError] = useState("");
@@ -32,11 +33,9 @@ function App() {
   }
 
   return (
-    <div className="text-center flex flex-col">
-      <h1 className="text-4xl border-b-2 border-blue-200 py-3 font-bold">
-        Wordle With Friends
-      </h1>
-      <h2 className="text-xl mt-3 font-medium">
+    <>
+      <Header />
+      <h2 className="text-lg text-center mt-5 font-medium">
         Let your friends solve your{" "}
         <a
           href="https://www.nytimes.com/games/wordle/index.html"
@@ -46,12 +45,14 @@ function App() {
           Wordle!
         </a>
       </h2>
-      <p className="mt-2">Enter a 5 letters word to get started.</p>
+      <p className="mt-2 text-center text-sm">
+        Enter a 5 letters word to get started.
+      </p>
       <div className="mt-6 flex flex-col items-center">
         <input
           className="shadow appearance-none border uppercase rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-96"
           type="text"
-          placeholder="Enter a word"
+          placeholder="Enter your word here"
           onChange={(e) => {
             if (e.target.value.length > WORD_LENGTH) return;
             setWord(e.target.value);
@@ -81,12 +82,12 @@ function App() {
         </button>
       </div>
       {isCopied && (
-        <p className="mt-6">
+        <p className="mt-6 max-w-96 mx-auto text-center text-sm">
           A shareable link has been created and copied. Send it to your friends!
         </p>
       )}
-    </div>
+    </>
   );
 }
 
-export default App;
+export default HomePage;
