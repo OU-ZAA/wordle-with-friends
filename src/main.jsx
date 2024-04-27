@@ -1,18 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App.jsx";
-import Board from "./Board.jsx";
-import "./index.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import HomePage from "./pages/Home.jsx";
+import GamePage from "./pages/Game.jsx";
+import "./index.css";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <HomePage />,
   },
   {
     path: "/:details",
-    element: <Board />,
+    element: <GamePage />,
   },
 ]);
 

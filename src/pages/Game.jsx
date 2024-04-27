@@ -1,23 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { decryptRot13 } from "../utils/caesar-cipher";
+import { CircleXIcon, DeleteIcon, Share2Icon } from "lucide-react";
 
 const WORD_LENGTH = 5;
-const backspace = (
-  <svg
-    aria-hidden="true"
-    xmlns="http://www.w3.org/2000/svg"
-    height="28"
-    viewBox="0 0 24 24"
-    width="20"
-    data-role="Backspace"
-  >
-    <path
-      fill="black"
-      d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H7.07L2.4 12l4.66-7H22v14zm-11.59-2L14 13.41 17.59 17 19 15.59 15.41 12 19 8.41 17.59 7 14 10.59 10.41 7 9 8.41 12.59 12 9 15.59z"
-    ></path>
-  </svg>
-);
+const backspace = <DeleteIcon />;
 const ROW1 = ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"];
 const ROW2 = ["a", "s", "d", "f", "g", "h", "j", "k", "l"];
 const ROW3 = ["Enter", "z", "x", "c", "v", "b", "n", "m", backspace];
@@ -50,18 +37,7 @@ function Modal({ name, solution, setIsGameOver }) {
             type="button"
             className="absolute right-2 top-[-24px]"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-8 w-8 text-white"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fillRule="evenodd"
-                d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                clipRule="evenodd"
-              ></path>
-            </svg>
+            <CircleXIcon className="text-white hover:text-red-500" />
           </button>
           <div className="sm:flex sm:justify-center sm:space-x-2">
             <a
@@ -75,20 +51,7 @@ function Modal({ name, solution, setIsGameOver }) {
               className="flex bg-[#b59f3b] items-center space-x-2 mt-3 w-full justify-center rounded-md border border-transparent shadow-sm px-4 py-2 font-medium text-white sm:mt-0 sm:col-start-1 sm:text-sm"
             >
               <span>Share</span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
-                ></path>
-              </svg>
+              <Share2Icon className="h-4 w-4" />
             </button>
           </div>
         </div>
@@ -200,7 +163,7 @@ function KeyboardLayout({
   );
 }
 
-function Board() {
+function GamePage() {
   const [guesses, setGuesses] = useState(Array(6).fill(null));
   const [currentGuess, setCurrentGuess] = useState("");
   const [isGameOver, setIsGameOver] = useState(false);
@@ -287,4 +250,4 @@ function Board() {
   );
 }
 
-export default Board;
+export default GamePage;
