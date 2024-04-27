@@ -60,7 +60,7 @@ function HomePage() {
           disabled={isNext}
           value={word}
         />
-        {error && <p className="error">{error}</p>}
+        {error && <p className="text-red-600 text-xs mt-2">{error}</p>}
         {isNext && (
           <input
             className="mt-3 shadow appearance-none border capitalize rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-80 sm:w-96"
