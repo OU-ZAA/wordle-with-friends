@@ -19,7 +19,7 @@ function HomePage() {
         return;
       }
       if (!WORDS.includes(word)) {
-        setError("Enter a real word");
+        setError("Not in word list");
         return;
       }
       setError("");
