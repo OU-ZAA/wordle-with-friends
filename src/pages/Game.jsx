@@ -57,15 +57,16 @@ function Row({ guess, isGuessEntered, solution }) {
   // when the guess is null or '', we still want to render the tiles with empty strings
   for (let i = 0; i < WORD_LENGTH; i++) {
     const char = guess[i];
-    let className =
-      "w-12 h-12 border-2 border-[#d3d6da] text-2xl flex justify-center items-center uppercase font-bold";
+    let className = `w-12 h-12 border-2 ${
+      char ? "border-[#878a8c]" : "border-[#d3d6da]"
+    } text-2xl flex justify-center items-center uppercase font-bold`;
     if (isGuessEntered) {
       if (char === solution[i]) {
-        className = className + " text-white bg-[#538d4e]";
+        className = className + " text-white bg-[#538d4e] border-[#538d4e]";
       } else if (solution.includes(char)) {
-        className = className + " text-white bg-[#b59f3b]";
+        className = className + " text-white bg-[#b59f3b] border-[#b59f3b]";
       } else {
-        className = className + " text-white bg-[#787c7e]";
+        className = className + " text-white bg-[#787c7e] border-[#787c7e]";
       }
     }
     tiles.push(
