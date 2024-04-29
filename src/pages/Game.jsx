@@ -6,7 +6,7 @@ import { Header } from "../components/ui/Header";
 import { WORDS } from "../utils/words";
 
 const WORD_LENGTH = 5;
-const backspace = <DeleteIcon />;
+const backspace = <DeleteIcon data-role="backspace" />;
 const ROW1 = ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"];
 const ROW2 = ["a", "s", "d", "f", "g", "h", "j", "k", "l"];
 const ROW3 = ["Enter", "z", "x", "c", "v", "b", "n", "m", backspace];
@@ -91,8 +91,7 @@ function KeyboardLayout({
 }) {
   function handleClick(event) {
     if (isGameOver) return;
-
-    if (event.target.dataset.role === "Backspace") {
+    if (event.target.dataset.role === "backspace") {
       setCurrentGuess(currentGuess.slice(0, -1));
       return;
     }
@@ -148,10 +147,21 @@ function KeyboardLayout({
       </div>
       <div className="flex justify-center items-center gap-1">
         {ROW3.map((element, idx) => {
-          if (element == "Enter" || element == backspace) {
+          if (element == backspace) {
             return (
               <button
-                className="bg-gray-300 text-sm rounded uppercase font-bold w-14 h-12 flex justify-center items-center"
+                className="bg-gray-300 rounded uppercase py-3 px-4 font-bold flex justify-center items-center"
+                key={idx}
+                onClick={handleClick}
+              >
+                {element}
+              </button>
+            );
+          }
+          if (element == "Enter") {
+            return (
+              <button
+                className="bg-gray-300 rounded uppercase w-14 h-12 text-sm font-bold flex justify-center items-center"
                 key={idx}
                 onClick={handleClick}
               >
