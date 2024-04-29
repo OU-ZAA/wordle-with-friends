@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { decryptRot13 } from "../utils/caesar-cipher";
 import { CircleXIcon, DeleteIcon, Share2Icon } from "lucide-react";
 import { Header } from "../components/ui/Header";
+import { WORDS } from "../utils/words";
 
 const WORD_LENGTH = 5;
 const backspace = <DeleteIcon />;
@@ -33,7 +34,7 @@ function Modal({ name, solution, setIsGameOver }) {
         </button>
         <div className="sm:flex sm:justify-center sm:space-x-2">
           <a
-            href={window.location.href}
+            href={window.location.href.replace(window.location.pathname, "/")}
             className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-correct text-base font-medium text-white bg-[#538d4e] sm:col-start-2 sm:text-sm"
           >
             Create a Word
@@ -167,10 +168,28 @@ function KeyboardLayout({
   );
 }
 
+function PopUp({ setIsPopupOpen }) {
+  useEffect(() => {
+    setTimeout(() => setIsPopupOpen(false), 2000);
+  }, [setIsPopupOpen]);
+
+  return (
+    <div className="z-10 inset-0 overflow-y-auto absolute flex justify-center items-start">
+      <div
+        className="relative p-2 text-sm text-white rounded-lg bg-black w-fit shadow-xl transform transition-all top-10"
+        role="alert"
+      >
+        <span className="font-medium">Not in words list!</span>
+      </div>
+    </div>
+  );
+}
+
 function GamePage() {
   const [guesses, setGuesses] = useState(Array(6).fill(null));
   const [currentGuess, setCurrentGuess] = useState("");
   const [isGameOver, setIsGameOver] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
   const { details } = useParams();
   const [hashedSolution, name] = details.split("-");
   const solution = decryptRot13(hashedSolution.toUpperCase()).toLowerCase();
@@ -185,11 +204,14 @@ function GamePage() {
       }
 
       if (event.key == "Enter" && currentGuess.length == WORD_LENGTH) {
+        if (!WORDS.includes(currentGuess)) {
+          setIsPopupOpen(true);
+          return;
+        }
         const newGuesses = guesses;
         newGuesses[guesses.findIndex((val) => val == null)] = currentGuess;
         setGuesses(newGuesses);
         if (currentGuess === solution) {
-          console.log("guesses", guesses);
           setIsGameOver(true);
           return;
         }
@@ -253,6 +275,7 @@ function GamePage() {
           setIsGameOver={setIsGameOver}
           solution={solution}
         />
+        {isPopupOpen && <PopUp setIsPopupOpen={setIsPopupOpen} />}
       </main>
     </>
   );
