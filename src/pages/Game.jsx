@@ -201,11 +201,122 @@ function PopUp({ setIsPopupOpen }) {
   );
 }
 
+function Guide({ setIsGuideOpen }) {
+  const example1 = ["w", "e", "a", "r", "y"];
+  const example2 = ["p", "i", "l", "l", "s"];
+  const example3 = ["v", "a", "g", "u", "e"];
+
+  return (
+    <div className="z-10 p-6 inset-0 overflow-y-auto absolute top-14 bg-white sm:max-w-3xl sm:mx-auto">
+      <button
+        type="button"
+        className="absolute right-2 top-0"
+        onClick={() => setIsGuideOpen(false)}
+      >
+        <CircleXIcon className="hover:text-red-500" />
+      </button>
+      <article>
+        <h2 className="font-bold text-2xl">How To Play</h2>
+        <p>Guess the wordle in 6 tries.</p>
+        <ul className="my-4 text-sm">
+          <li className="before:w-2 before:h-2 before:bg-black before:inline-block before:rounded-full before:mr-2">
+            Each guess must be a valid 5-letter word.
+          </li>
+          <li className="before:w-2 before:h-2 before:bg-black before:inline-block before:rounded-full before:mr-2">
+            The color of the tiles will change to show how close your guess was
+            to the word.
+          </li>
+        </ul>
+        <p className="font-semibold">Examples</p>
+        <div className="flex gap-1 mt-2">
+          {example1.map((char, idx) => {
+            if (char === "w") {
+              return (
+                <div
+                  className="w-8 h-8 border-2 border-[#538d4e] bg-[#538d4e] text-2xl flex justify-center items-center text-white font-bold uppercase"
+                  key={idx}
+                >
+                  {char}
+                </div>
+              );
+            }
+            return (
+              <div
+                className="w-8 h-8 border-2 border-[#878a8c] text-2xl flex justify-center items-center font-bold uppercase"
+                key={idx}
+              >
+                {char}
+              </div>
+            );
+          })}
+        </div>
+        <p className="mt-2">
+          <span className="uppercase font-bold">w</span> is in the word and in
+          the correct spot.
+        </p>
+        <div className="flex gap-1 mt-2">
+          {example2.map((char, idx) => {
+            if (char === "i") {
+              return (
+                <div
+                  className="w-8 h-8 border-2 border-[#b59f3b] bg-[#b59f3b] text-2xl flex justify-center items-center text-white font-bold uppercase"
+                  key={idx}
+                >
+                  {char}
+                </div>
+              );
+            }
+            return (
+              <div
+                className="w-8 h-8 border-2 border-[#878a8c] text-2xl flex justify-center items-center font-bold uppercase"
+                key={idx}
+              >
+                {char}
+              </div>
+            );
+          })}
+        </div>
+        <p className="mt-2">
+          <span className="uppercase font-bold">i</span> is in the word but in
+          the wrong spot.
+        </p>
+        <div className="flex gap-1 mt-2">
+          {example3.map((char, idx) => {
+            if (char === "u") {
+              return (
+                <div
+                  className="w-8 h-8 border-2 border-[#787c7e] bg-[#787c7e] text-2xl flex justify-center items-center text-white font-bold uppercase"
+                  key={idx}
+                >
+                  {char}
+                </div>
+              );
+            }
+            return (
+              <div
+                className="w-8 h-8 border-2 border-[#878a8c] text-2xl flex justify-center items-center font-bold uppercase"
+                key={idx}
+              >
+                {char}
+              </div>
+            );
+          })}
+        </div>
+        <p className="mt-2">
+          <span className="uppercase font-bold">u</span> is not in the word in
+          any spot.
+        </p>
+      </article>
+    </div>
+  );
+}
+
 function GamePage() {
   const [guesses, setGuesses] = useState(Array(6).fill(null));
   const [currentGuess, setCurrentGuess] = useState("");
   const [isGameOver, setIsGameOver] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isGuideOpen, setIsGuideOpen] = useState(false);
   const { details } = useParams();
   const [hashedSolution, name] = details.split("-");
   const solution = decryptRot13(hashedSolution.toUpperCase()).toLowerCase();
@@ -261,6 +372,12 @@ function GamePage() {
           {name.charAt(0).toUpperCase() + name.slice(1)}
           &apos;s 5 letter word!
         </p>
+        <button
+          onClick={() => setIsGuideOpen(true)}
+          className="text-sm w-full mt-2 underline hover:text-gray-800 transition-colors"
+        >
+          How to play
+        </button>
         <div className="flex flex-col items-center gap-1 mt-4">
           {guesses.map((guess, idx) => {
             const isCurrentGuess =
@@ -293,6 +410,7 @@ function GamePage() {
           setIsPopupOpen={setIsPopupOpen}
         />
         {isPopupOpen && <PopUp setIsPopupOpen={setIsPopupOpen} />}
+        {isGuideOpen && <Guide setIsGuideOpen={setIsGuideOpen} />}
       </main>
     </>
   );
