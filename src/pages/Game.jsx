@@ -11,7 +11,7 @@ const ROW1 = ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"];
 const ROW2 = ["a", "s", "d", "f", "g", "h", "j", "k", "l"];
 const ROW3 = ["Enter", "z", "x", "c", "v", "b", "n", "m", backspace];
 
-function Modal({ name, solution, setIsGameOver }) {
+function Modal({ name, solution, setIsModelOpen }) {
   return (
     <div className="z-10 inset-0 overflow-y-auto absolute top-32 flex justify-center items-start">
       <div className="text-white space-y-8 text-center relative bg-[#121213] rounded-lg p-6 overflow-hidden shadow-xl transform transition-all sm:align-middle sm:max-w-sm sm:w-full">
@@ -26,7 +26,7 @@ function Modal({ name, solution, setIsGameOver }) {
           {solution.toUpperCase()}.
         </div>
         <button
-          onClick={() => setIsGameOver(false)}
+          onClick={() => setIsModelOpen(false)}
           type="button"
           className="absolute right-2 top-[-24px]"
         >
@@ -88,6 +88,7 @@ function KeyboardLayout({
   isGameOver,
   setIsGameOver,
   setIsPopupOpen,
+  setIsModelOpen,
 }) {
   function handleClick(event) {
     if (isGameOver) return;
@@ -110,6 +111,8 @@ function KeyboardLayout({
 
       if (currentGuess === solution) {
         setIsGameOver(!isGameOver);
+        setIsModelOpen(true);
+        setCurrentGuess("");
         return;
       }
       setCurrentGuess("");
@@ -315,6 +318,7 @@ function GamePage() {
   const [guesses, setGuesses] = useState(Array(6).fill(null));
   const [currentGuess, setCurrentGuess] = useState("");
   const [isGameOver, setIsGameOver] = useState(false);
+  const [isModelOpen, setIsModelOpen] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isGuideOpen, setIsGuideOpen] = useState(false);
   const { details } = useParams();
@@ -340,6 +344,8 @@ function GamePage() {
         setGuesses(newGuesses);
         if (currentGuess === solution) {
           setIsGameOver(true);
+          setIsModelOpen(true);
+          setCurrentGuess("");
           return;
         }
         setCurrentGuess("");
@@ -363,6 +369,8 @@ function GamePage() {
     return () => window.removeEventListener("keydown", handleType);
   }, [currentGuess, guesses, isGameOver, solution]);
 
+  console.log(guesses, currentGuess);
+
   return (
     <>
       <Header />
@@ -382,6 +390,7 @@ function GamePage() {
           {guesses.map((guess, idx) => {
             const isCurrentGuess =
               idx === guesses.findIndex((val) => val == null);
+            console.log(isCurrentGuess, idx);
             return (
               <Row
                 key={idx}
@@ -392,11 +401,11 @@ function GamePage() {
             );
           })}
         </div>
-        {isGameOver && (
+        {isModelOpen && (
           <Modal
             name={name}
             solution={solution}
-            setIsGameOver={setIsGameOver}
+            setIsModelOpen={setIsModelOpen}
           />
         )}
         <KeyboardLayout
@@ -408,6 +417,7 @@ function GamePage() {
           setIsGameOver={setIsGameOver}
           solution={solution}
           setIsPopupOpen={setIsPopupOpen}
+          setIsModelOpen={setIsModelOpen}
         />
         {isPopupOpen && <PopUp setIsPopupOpen={setIsPopupOpen} />}
         {isGuideOpen && <Guide setIsGuideOpen={setIsGuideOpen} />}
