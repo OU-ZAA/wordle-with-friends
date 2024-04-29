@@ -11,16 +11,25 @@ const ROW1 = ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"];
 const ROW2 = ["a", "s", "d", "f", "g", "h", "j", "k", "l"];
 const ROW3 = ["Enter", "z", "x", "c", "v", "b", "n", "m", backspace];
 
-function Modal({ name, solution, setIsModelOpen }) {
+function Modal({ name, solution, setIsModelOpen, guess }) {
   return (
     <div className="z-10 inset-0 overflow-y-auto absolute top-32 flex justify-center items-start">
       <div className="text-white space-y-8 text-center relative bg-[#121213] rounded-lg p-6 overflow-hidden shadow-xl transform transition-all sm:align-middle sm:max-w-sm sm:w-full">
-        <h3 className="text-3xl leading-6 font-bold">
-          You win!{" "}
-          <span role="img" aria-label="win" aria-hidden="false">
-            🎉
-          </span>{" "}
-        </h3>
+        {guess === solution ? (
+          <h3 className="text-3xl leading-6 font-bold">
+            You won!{" "}
+            <span role="img" aria-label="win" aria-hidden="false">
+              🎉
+            </span>{" "}
+          </h3>
+        ) : (
+          <h3 className="text-3xl leading-6 font-bold">
+            You lost!{" "}
+            <span role="img" aria-label="win" aria-hidden="false">
+              😢
+            </span>{" "}
+          </h3>
+        )}
         <div>
           {name.charAt(0).toUpperCase() + name.slice(1)}&apos;s word was{" "}
           {solution.toUpperCase()}.
@@ -342,6 +351,10 @@ function GamePage() {
         const newGuesses = guesses;
         newGuesses[guesses.findIndex((val) => val == null)] = currentGuess;
         setGuesses(newGuesses);
+        if (guesses.findIndex((val) => val == null) == -1) {
+          setIsGameOver(true);
+          setIsModelOpen(true);
+        }
         if (currentGuess === solution) {
           setIsGameOver(true);
           setIsModelOpen(true);
@@ -369,8 +382,6 @@ function GamePage() {
     return () => window.removeEventListener("keydown", handleType);
   }, [currentGuess, guesses, isGameOver, solution]);
 
-  console.log(guesses, currentGuess);
-
   return (
     <>
       <Header />
@@ -390,7 +401,6 @@ function GamePage() {
           {guesses.map((guess, idx) => {
             const isCurrentGuess =
               idx === guesses.findIndex((val) => val == null);
-            console.log(isCurrentGuess, idx);
             return (
               <Row
                 key={idx}
@@ -406,6 +416,7 @@ function GamePage() {
             name={name}
             solution={solution}
             setIsModelOpen={setIsModelOpen}
+            guess={guesses[guesses.length - 1]}
           />
         )}
         <KeyboardLayout
