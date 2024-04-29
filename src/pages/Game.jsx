@@ -86,6 +86,7 @@ function KeyboardLayout({
   solution,
   isGameOver,
   setIsGameOver,
+  setIsPopupOpen,
 }) {
   function handleClick(event) {
     if (isGameOver) return;
@@ -99,6 +100,10 @@ function KeyboardLayout({
       event.target.textContent == "Enter" &&
       currentGuess.length == WORD_LENGTH
     ) {
+      if (!WORDS.includes(currentGuess)) {
+        setIsPopupOpen(true);
+        return;
+      }
       const newGuesses = guesses;
       newGuesses[guesses.findIndex((val) => val == null)] = currentGuess;
       setGuesses(newGuesses);
@@ -274,6 +279,7 @@ function GamePage() {
           isGameOver={isGameOver}
           setIsGameOver={setIsGameOver}
           solution={solution}
+          setIsPopupOpen={setIsPopupOpen}
         />
         {isPopupOpen && <PopUp setIsPopupOpen={setIsPopupOpen} />}
       </main>
