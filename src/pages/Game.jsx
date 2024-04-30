@@ -124,6 +124,10 @@ function KeyboardLayout({
         setCurrentGuess("");
         return;
       }
+      if (guesses.findIndex((val) => val == null) == -1) {
+        setIsGameOver(true);
+        setIsModelOpen(true);
+      }
       setCurrentGuess("");
       return;
     }
@@ -351,15 +355,15 @@ function GamePage() {
         const newGuesses = guesses;
         newGuesses[guesses.findIndex((val) => val == null)] = currentGuess;
         setGuesses(newGuesses);
-        if (guesses.findIndex((val) => val == null) == -1) {
-          setIsGameOver(true);
-          setIsModelOpen(true);
-        }
         if (currentGuess === solution) {
           setIsGameOver(true);
           setIsModelOpen(true);
           setCurrentGuess("");
           return;
+        }
+        if (guesses.findIndex((val) => val == null) == -1) {
+          setIsGameOver(true);
+          setIsModelOpen(true);
         }
         setCurrentGuess("");
         return;
