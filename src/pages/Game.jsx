@@ -420,7 +420,7 @@ function GamePage() {
             name={name}
             solution={solution}
             setIsModelOpen={setIsModelOpen}
-            guess={guesses[guesses.length - 1]}
+            guess={guesses[guesses.findIndex((val) => val == null) - 1]}
           />
         )}
         <KeyboardLayout
