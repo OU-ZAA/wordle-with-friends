@@ -44,13 +44,13 @@ function Modal({ name, solution, setIsModelOpen, guess }) {
         <div className="sm:flex sm:justify-center sm:space-x-2">
           <a
             href={window.location.href.replace(window.location.pathname, "/")}
-            className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-correct text-base font-medium text-white bg-[#538d4e] sm:col-start-2 sm:text-sm"
+            className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-correct text-base font-medium text-white bg-correct sm:col-start-2 sm:text-sm"
           >
             Create a Word
           </a>
           <button
             type="button"
-            className="flex bg-[#b59f3b] items-center space-x-2 mt-3 w-full justify-center rounded-md border border-transparent shadow-sm px-4 py-2 font-medium text-white sm:mt-0 sm:col-start-1 sm:text-sm"
+            className="flex bg-present items-center space-x-2 mt-3 w-full justify-center rounded-md border border-transparent shadow-sm px-4 py-2 font-medium text-white sm:mt-0 sm:col-start-1 sm:text-sm"
           >
             <span>Share</span>
             <Share2Icon className="h-4 w-4" />
@@ -71,11 +71,11 @@ function Row({ guess, isGuessEntered, solution }) {
     } text-2xl flex justify-center items-center uppercase font-bold`;
     if (isGuessEntered) {
       if (char === solution[i]) {
-        className = className + " text-white bg-[#538d4e] border-[#538d4e]";
+        className = className + " text-white bg-correct border-correct";
       } else if (solution.includes(char)) {
-        className = className + " text-white bg-[#b59f3b] border-[#b59f3b]";
+        className = className + " text-white bg-present border-present";
       } else {
-        className = className + " text-white bg-[#787c7e] border-[#787c7e]";
+        className = className + " text-white bg-absent border-absent";
       }
     }
     tiles.push(
@@ -249,7 +249,7 @@ function Guide({ setIsGuideOpen }) {
             if (char === "w") {
               return (
                 <div
-                  className="w-8 h-8 border-2 border-[#538d4e] bg-[#538d4e] text-2xl flex justify-center items-center text-white font-bold uppercase"
+                  className="w-8 h-8 border-2 border-correct bg-correct text-2xl flex justify-center items-center text-white font-bold uppercase"
                   key={idx}
                 >
                   {char}
@@ -275,7 +275,7 @@ function Guide({ setIsGuideOpen }) {
             if (char === "i") {
               return (
                 <div
-                  className="w-8 h-8 border-2 border-[#b59f3b] bg-[#b59f3b] text-2xl flex justify-center items-center text-white font-bold uppercase"
+                  className="w-8 h-8 border-2 border-present bg-present text-2xl flex justify-center items-center text-white font-bold uppercase"
                   key={idx}
                 >
                   {char}
@@ -301,7 +301,7 @@ function Guide({ setIsGuideOpen }) {
             if (char === "u") {
               return (
                 <div
-                  className="w-8 h-8 border-2 border-[#787c7e] bg-[#787c7e] text-2xl flex justify-center items-center text-white font-bold uppercase"
+                  className="w-8 h-8 border-2 border-absent bg-absent text-2xl flex justify-center items-center text-white font-bold uppercase"
                   key={idx}
                 >
                   {char}
