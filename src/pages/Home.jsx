@@ -54,11 +54,19 @@ function HomePage() {
           type="text"
           placeholder="Enter your word here"
           onChange={(e) => {
+            console.log(e.key);
             if (e.target.value.length > WORD_LENGTH) return;
             setWord(e.target.value.toLowerCase());
           }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleCreateLink();
+            }
+          }}
           disabled={isNext}
           value={word}
+          autoFocus
+          required
         />
         {error && <p className="text-red-600 text-xs mt-2">{error}</p>}
         {isNext && (
@@ -68,7 +76,14 @@ function HomePage() {
             placeholder="What's your name?"
             disabled={isCopied}
             onChange={(e) => setName(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleCreateLink();
+              }
+            }}
             value={name}
+            autoFocus
+            required
           />
         )}
         <button

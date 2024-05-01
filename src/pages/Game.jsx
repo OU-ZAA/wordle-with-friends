@@ -44,7 +44,7 @@ function Modal({ name, solution, setIsModelOpen, guess }) {
         <div className="sm:flex sm:justify-center sm:space-x-2">
           <a
             href={window.location.href.replace(window.location.pathname, "/")}
-            className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-correct text-base font-medium text-white bg-correct sm:col-start-2 sm:text-sm"
+            className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-correct text-base font-medium text-white sm:col-start-2 sm:text-sm"
           >
             Create a Word
           </a>
